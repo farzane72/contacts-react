@@ -1,5 +1,8 @@
 import { GetContacts } from "@/services/api/ApiContacts";
 import { useLoaderData, LoaderFunctionArgs } from "react-router-dom";
+import { useContacts } from "@/contexts/ContactContext";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 interface SingleContactProps {
   fullName: string;
@@ -13,11 +16,17 @@ interface SingleContactProps {
 const SingleContact: React.FunctionComponent = () => {
   const product = useLoaderData() as SingleContactProps;
   const { fullName, srcPicture, mobile, email, job, group } = product;
+  const {editGroup,groups}=useContacts()
+  useEffect(() => {
+    editGroup()
+    
+   }, []);
+
   return (
     // <div className="container mx-auto">
     <div className="bg-slate-700 p-5 rounded-md   ">
-      <div className=" flex gap-8  h-[230px] ">
-        <div className=" flex items-center justify-center w-[250px] ">
+      <div className=" flex gap-8  h-[190px] ">
+        <div className=" flex items-center justify-center w-[400px] ">
           <img className=" w-full h-full rounded-md " src={srcPicture} />
         </div>
         <div className="w-full h-full ">
@@ -40,14 +49,16 @@ const SingleContact: React.FunctionComponent = () => {
             </p>
             <p className="border border-b p-2">
               <span>گروه:</span>
-              <span> {group}</span>
+              <span> {groups.find(item=>item.id === group)?.name}</span>
             </p>
           </div>
         </div>
       </div>
-      <div className="flex justify-center">
+      <Link to="/contacts">
+      <div className="flex justify-center mt-4">
         <button className="bg-violet-700 p-2 rounded-md sm:w-[300px] md:sm:w-[500px]">برگشت به صفحه اصلی</button>
       </div>
+      </Link>
     </div>
 
     // </div>

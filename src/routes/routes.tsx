@@ -5,6 +5,7 @@ import EditContacts,{loader as  EditContactLoader } from "@/pages/contacts/EditC
 import AddContacts from "@/pages/contacts/AddContacts";
 import Error from "@/components/error/Error"
 import SingleContact,{loader as SingleContactLoader} from "@/pages/contacts/SingleContact";
+import Home from "@/pages/home/home/Home";
 //mport AppLayout from "@/layout/AppLayout"
 
 //import AppLayout from "@/layout/AppLayout.jsx"
@@ -13,21 +14,22 @@ import SingleContact,{loader as SingleContactLoader} from "@/pages/contacts/Sing
 
 
 const router = createBrowserRouter([
-  // {
-  //   path:'/',
-  //   element:<Home />,
+   {
+     path:'/',
+    element:<Home />,
     
-  // },
+  },
+  {
+    element: <Contacts />,
+    errorElement:<Error />,
+    loader:ContactsLoader,
+    path: "/contacts"
+},
     {
        element: <AppLayout />,
        errorElement:<Error />,
         children: [
-            {
-                element: <Contacts />,
-                errorElement:<Error />,
-                loader:ContactsLoader,
-                path: "/contacts"
-            },
+            
             {
               element: <AddContacts />,
               errorElement:<Error />,

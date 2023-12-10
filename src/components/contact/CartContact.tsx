@@ -1,20 +1,22 @@
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { useContacts } from "@/contexts/ContactContext";
 interface ContacProps {
-  id:number,
+  id ?:number|string,
   fullName: string;
   srcPicture: string;
   mobile: string;
   email: string;
   job: string;
   //selectOption?: string;
-  group:string
+  group:string,
+  key ?:string|number
 }
 
 const CartContact: React.FunctionComponent<ContacProps> = (props) => {
   const { fullName, srcPicture, mobile, email,id } = props;
   //const Contac= (props: ContacProps)=>{
-  const {deleteContact}=useContacts()
+  const {deleteContact,changeStatusFormik}=useContacts()
+  const navigate=useNavigate()
   return (
     <div className="bg-slate-700 p-5 rounded-md  w-full h-[150px] flex justify-between gap-4 mt-4 ">
       <div className=" flex items-center justify-center basis-2/5 ">
@@ -42,7 +44,10 @@ const CartContact: React.FunctionComponent<ContacProps> = (props) => {
         </div>
         <div className="flex flex-col justify-between ">
           <Link to={`/contacts/${id}`}>
-            <div className="flex justify-center items-center bg-orange-300 rounded-md p-2">
+            <div className="flex justify-center items-center bg-orange-300 rounded-md p-2"
+            // onClick={()=>{changeStatusFormik("add")
+            // navigate(`/contacts/${id}`)}}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
@@ -58,8 +63,11 @@ const CartContact: React.FunctionComponent<ContacProps> = (props) => {
               </svg>
             </div>
           </Link>
-          <Link to={`/contacts/edit/${id}`}>
-            <div className="flex justify-center items-center bg-blue-300 rounded-md p-2 mt-1">
+          {/* <Link to={`/contacts/edit/${id}`}> */}
+            <div className="flex justify-center items-center bg-blue-300 rounded-md p-2 mt-1"
+              onClick={()=>{changeStatusFormik("edit")
+              navigate(`/contacts/edit/${id}`)}
+              }>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
@@ -69,10 +77,10 @@ const CartContact: React.FunctionComponent<ContacProps> = (props) => {
                 <path d="M2.695 14.763l-1.262 3.154a.5.5 0 00.65.65l3.155-1.262a4 4 0 001.343-.885L17.5 5.5a2.121 2.121 0 00-3-3L3.58 13.42a4 4 0 00-.885 1.343z" />
               </svg>
             </div>
-          </Link>
+          {/* </Link> */}
           {/* <Link to={`/contacts/edit/${id}`}> */}
             <div className="flex justify-center items-center bg-red-300 rounded-md p-2 mt-1"
-             onClick={()=>deleteContact(id)}>
+             onClick={()=>deleteContact(id,fullName)}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"

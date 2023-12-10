@@ -10,7 +10,7 @@ function NotFound() {
   console.log(error);
 
   return (
-    <div className='text-white'>
+    <div className='text-white bg-slate-800/95 min-h-screen flex flex-col items-center justify-center gap-8'>
       <h1>Something went wrong 😢</h1>
       <p> {error.data||error.message} </p>
       <button onClick={() => navigate(-1)}>&larr; Go back</button>

@@ -13,8 +13,8 @@ export const GetContacts = async ({ endPoint, params="" }:ApiFunctions) => {
     // try {
        
        const response = await axios.get(`${Base_Url}/${endPoint}${params}`);
-        console.log(params);
-       console.log("+",`${Base_Url}/${endPoint}${params}`);
+       // console.log(params);
+       //console.log("+",`${Base_Url}/${endPoint}${params}`);
        return response.data;
      //} 
     //  catch (error) {

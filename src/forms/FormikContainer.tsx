@@ -1,43 +1,30 @@
-import { Formik, Form, FormikHelpers, FormikProps,FieldProps,FieldAttributes,FieldInputProps } from "formik";
+import { Formik, Form, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import FormikControl from "./FormikControl";
 import { useContacts } from "@/contexts/ContactContext";
-import { SetData } from "@/services/api/ApiContacts";
+import { useNavigate } from "react-router-dom";
+import toast from 'react-hot-toast';
 
 type FormikValuesType = {
+  id:number
   fullName: string;
   srcPicture: string;
   mobile: string;
   email: string;
   job: string;
-  //group:string,
-//  selectOption: { key: string; value: string }[];
-//selectOption:string
-group:string
+  group:string
 };
 type OptionTypes = {
   key: string;
   value: string;
 }[];
-const FormikContainer: React.FC = () => {
+const FormikContainer: React.FC <FormikValuesType> = ( props: FormikValuesType) => {
+  //const {  fullName, srcPicture, mobile, email, job, group } = props;
+  const {statusFormik, editContact,addContact,groups}=useContacts()
 
-  const{dispatch}=useContacts()
-  const initialValues: FormikValuesType = {
-    email: "",
-    // description:'',
-   // selectOption: [],
-   //selectOption: "",
-    ////radioOption:'',
-    //checkboxOption:[],
-    // birthDate:null
-    group:"",
-    fullName: "",
-    srcPicture: "",
-    mobile: "",
-    //email:"",
-    job: "",
-    //group:""
-  };
+  const initialValues: FormikValuesType =props
+  const navigate=useNavigate()
+ 
 
   //const onSubmit = (values:FormikValuesType, onSubmitProps:FormikProps<FormikValuesType>) => { console.log(values);
   const onSubmit = (
@@ -46,10 +33,36 @@ const FormikContainer: React.FC = () => {
   ) => {
     console.log(values);
 
-    // { setSubmitting }: FormikHelpers<Values>
-    console.log("saved data", JSON.parse(JSON.stringify(values)));
-    SetData({endPoint:"contacts",data:values})
-    dispatch({ type: "add", payload: values});
+   
+     const newValues={
+      id:values.id,
+      fullName: values.fullName,
+      srcPicture: values.srcPicture,
+      mobile: values.mobile,
+      email: values.email,
+      job:values.job,
+      group:groups.find(item=>item.name === values.group )?.id
+    }
+    //-------------------------------------------------------
+    if(statusFormik==="add") 
+    {
+     // addContact(values)
+     addContact(newValues)
+      toast.success('مخاطب با موفقیت ایجاد شد!',{
+        position: 'top-left',
+      } )
+    }
+      else
+    {
+      //editContact(props.id, values)
+      editContact(props.id,newValues)
+      toast.success('مخاطب با موفقیت ویرایش شد!',{
+        position: 'top-left',
+      } 
+  )
+
+    }
+    navigate('/contacts')
     resetForm();
     setSubmitting(false);
   };
@@ -74,26 +87,34 @@ const FormikContainer: React.FC = () => {
     { key: "سرویس", value: "سرویس" },
   ];
 
+ function Failure(e:React.MouseEvent){
+  e.preventDefault(),
+  navigate('/contacts')
+
+ }
+
+
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={onSubmit}
       validationSchema={validationSchema}
-      //validateOnMount
-      //enableReinitialize
+      validateOnMount
+      enableReinitialize
     >
       {(formik) => (
         <>
        
       
        
-    {/* FormikProps,FieldProps,FieldAttributes,FieldInputProps  */}
+    
         <Form className="flex flex-col">
           <FormikControl
             control="input"
             placeholder="نام و نام خانوادگی"
             type="text"
             name="fullName"
+           
           />
           <FormikControl
             control="input"
@@ -132,11 +153,12 @@ const FormikContainer: React.FC = () => {
               type="submit"
               className="bg-violet-700 p-2 rounded-md "
             >
-             ساخت مخاطب
+             {statusFormik==="add"?"ساخت مخاطب":"ویرایش"}
             </button>
             <button
-              type="submit"
+              
               className=" bg-slate-700 p-2 rounded-md  "
+              onClick={(e)=>Failure(e)}    
             >
              انصراف
             </button>

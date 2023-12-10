@@ -1,4 +1,4 @@
-import Search from "@/search/Search";
+
 
 function Header() {
   
@@ -24,8 +24,8 @@ function Header() {
         <span className="text-white">وب اپلیمیشن مدیریت</span>
         <span className="text-violet-700">مخاطبین</span>
       </div>
-      <Search />
-      
+     
+     
     </div>
   );
 }

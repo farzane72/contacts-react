@@ -1,7 +1,25 @@
 import FormikContainer from "@/forms/FormikContainer";
-// interface AddContactsProps {
-//   name: string;
-// }
+
+
+interface ContactValues {
+  id:number,
+  fullName: string;
+  srcPicture: string;
+  mobile: string;
+  email: string;
+  job: string;
+  //selectOption: string;
+  group:string
+}
+const contact={
+   id:0,
+  fullName: "",
+  srcPicture: "",
+  mobile: "",
+  email: "",
+  job:"",
+  group:""
+}
 
 const AddContacts: React.FunctionComponent = () => {
   return (
@@ -12,11 +30,9 @@ const AddContacts: React.FunctionComponent = () => {
         </h1>
       </div>
       <div className=" flex gap-8 ">
-        {/* <div className="w-full h-full bg-[url('../src/assets/images/1.avif')] "  >
-
-            </div> */}
+       
         <div className="basis-1/2 h-full">
-            <FormikContainer />
+            <FormikContainer { ...contact} />
 
         </div>
         <div className="basis-1/2 min-h-screen">
@@ -26,7 +42,7 @@ const AddContacts: React.FunctionComponent = () => {
 
 
     </div>
-    //  <div  className="bg-[url('@/assets/images/1.avif')] relative z-50">
+    
   );
 };
 

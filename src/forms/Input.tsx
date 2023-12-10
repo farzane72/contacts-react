@@ -1,18 +1,22 @@
-import { Field, ErrorMessage } from "formik";
-import TextError from "./TextError";
+import { Field, ErrorMessage,useFormikContext } from "formik";
+
+//import TextError from "./TextError";
 type InputProps = {
   placeholder?: string;
   name: string;
   type?: string;
-  valueinput ?:string
+ 
+  
 };
 
 //function Input(props: InputProps) {
 const Input: React.FC<InputProps> = (props: InputProps) => {
-  const {valueinput, placeholder, name, ...rest } = props;
-  
-
+  const { placeholder, name, ...rest } = props;
+  const { setFieldValue} = useFormikContext<InputProps>();
+  const {errors}=useFormikContext<InputProps>()
+  console.log("errors.name",errors.name) 
   return (
+    
     <div>
       <Field
         id={name}
@@ -20,13 +24,30 @@ const Input: React.FC<InputProps> = (props: InputProps) => {
         {...rest}
         placeholder={placeholder}
         className=" border border-violet-700 bg-slate-700 p-1 my-4 rounded-md text-white w-3/4"
-        value={valueinput}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          setFieldValue(name, e.target.value as string);
+        }}
+
       >
 
       </Field>
-      <div className=" text-sm text-red-500">
-        <ErrorMessage name={name} />
-      </div>
+      
+        
+        {
+          errors.name??(
+          <div className=" text-sm text-red-500">
+          <ErrorMessage name={name}  />
+        </div>
+        )
+
+        }
+        
+        
+        
+       
+
+     
+      
     </div>
   );
   // component={TextError}
